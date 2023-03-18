@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@hyper-cmd/lib-keys": "https://github.com/holepunchto/hyper-cmd-lib-keys",
-    "@hyperswarm/dht": "^6.3.2",
+    "hyperdht": "^6.5.2",
     "minimist": "^1.2.5"
   },
   "devDependencies": {},
