@@ -8,13 +8,24 @@ function storeKeyPair (k) {
   return JSON.stringify({
     secretKey: k.secretKey.toString('hex'),
     publicKey: k.publicKey.toString('hex')
-  })
+  }, null, 2)
 }
 
-const helpMsg = 'Usage:\nhyper-cmd-util-keygen --gen_seed | --gen_keypair filename.json'
+const helpMsg = 'Usage:\nhyper-cmd-util-keygen --gen_seed [filename.json] | --gen_keypair filename.json'
+const isArgValid = argv.gen_seed || argv.gen_keypair
 
 if (argv.gen_seed) {
-  console.log('Seed:', libKeys.randomBytes(32).toString('hex'))
+  let seed = libKeys.randomBytes(32).toString('hex')
+
+  if (typeof argv.gen_seed === 'string') {
+    const file = argv.gen_seed
+
+    fs.writeFileSync(file, JSON.stringify({ seed }, null, 2))
+
+    seed = `<saved to file: ${file}>`
+  }
+
+  console.log('Seed:', seed)
   process.exit(-1)
 }
 
@@ -33,7 +44,7 @@ if (argv.gen_keypair) {
   process.exit(-1)
 }
 
-if (argv.help) {
+if (!isArgValid || argv.help) {
   console.log(helpMsg)
   process.exit(-1)
 }
